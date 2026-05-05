@@ -201,5 +201,95 @@
       {"term_id": "GLOSS-109", "termo_canonico_pt": "fator de serviço", "sinonimos_pt": ["FS", "service factor"], "sinonimos_en": ["service factor", "SF"]},
       {"term_id": "GLOSS-110", "termo_canonico_pt": "ligação estrela-triângulo", "sinonimos_pt": ["Y-Δ", "Y/D", "partida estrela-triângulo"], "sinonimos_en": ["star-delta", "wye-delta", "Y-D connection"]}
     ]
+  },
+  "campos_cadastro_ativo": {
+    "descricao": "Definição dos 4 campos textuais obrigatórios do cadastro do ativo, com formato (regex de validação), template legível, exemplos válidos/inválidos e vocabulário controlado quando aplicável. Atende ao requisito do brief: 'definir os campos textuais obrigatórios do cadastro do ativo (descrição, TAG, localização, especificação técnica) com padronização de formato e vocabulário controlado'.",
+    "campos": [
+      {
+        "campo": "tag",
+        "label_pt": "TAG do Ativo",
+        "label_en": "Asset Tag",
+        "obrigatorio": true,
+        "tipo": "string",
+        "template": "{PREFIXO}-{NNN}-{LETRA}",
+        "regex_validacao": "^(M|MOT|EM|MIT)-\\d{3}-[A-Z]$",
+        "exemplos_validos": ["MOT-101-A", "M-205-B", "EM-340-C", "MIT-099-D"],
+        "exemplos_invalidos": ["motor1", "MOT_101_A", "MOT-101", "MOT-1-A"],
+        "vocabulario_controlado": false,
+        "descricao": "Identificador único alfanumérico. Prefixo indica tipo de ativo (M/MOT = motor genérico, EM = motor elétrico, MIT = motor de indução trifásico)."
+      },
+      {
+        "campo": "descricao",
+        "label_pt": "Descrição",
+        "label_en": "Description",
+        "obrigatorio": true,
+        "tipo": "string",
+        "template": "{TIPO_MOTOR} {FABRICANTE} {POTENCIA}kW {TENSAO}V {RPM}RPM",
+        "regex_validacao": "^.{20,200}$",
+        "exemplos_validos": [
+          "Motor de Indução Trifásico WEG 75kW 380V 1780RPM",
+          "Motor Síncrono Siemens 1500kW 4160V 1200RPM",
+          "Motor de Alta Tensão ABB 2200kW 4160V 1785RPM"
+        ],
+        "exemplos_invalidos": ["motor", "M", "MOT-101"],
+        "vocabulario_controlado": true,
+        "valores_tipo_motor": [
+          "Motor de Indução Trifásico",
+          "Motor de Indução Monofásico",
+          "Motor Síncrono",
+          "Motor de Alta Tensão",
+          "Motor de Baixa Tensão",
+          "Motor à Prova de Explosão",
+          "Motor Gaiola de Esquilo",
+          "Motor de Rotor Bobinado"
+        ],
+        "vocabulario_controlado_fabricante": "Ver seção fabricantes_padronizados.entradas[].forma_canonica"
+      },
+      {
+        "campo": "localizacao",
+        "label_pt": "Localização",
+        "label_en": "Location",
+        "obrigatorio": true,
+        "tipo": "string",
+        "template": "{PLANTA}-{AREA}-{SUB_AREA}",
+        "regex_validacao": "^[A-Z0-9]+(-[A-Z0-9 ]+){1,3}$",
+        "exemplos_validos": [
+          "PLANTA1-PRODUCAO-LINHA3",
+          "PLANTA2-UTILIDADES-COMPRESSORES",
+          "GALPAO-EMBALAGEM-SETOR4"
+        ],
+        "exemplos_invalidos": ["sala compressores", "p1.prod.l3", "Linha 3"],
+        "vocabulario_controlado": true,
+        "valores_area_sugeridos": [
+          "PRODUCAO", "UTILIDADES", "COMPRESSORES", "BOMBAS",
+          "VENTILACAO", "SUBESTACAO", "EMBALAGEM", "TREFILA", "RESFRIAMENTO"
+        ]
+      },
+      {
+        "campo": "especificacao_tecnica",
+        "label_pt": "Especificação Técnica",
+        "label_en": "Technical Specification",
+        "obrigatorio": true,
+        "tipo": "object",
+        "template": "Bloco estruturado com parâmetros nominais extraídos da placa",
+        "campos_filhos": [
+          {"chave": "potencia_kw",         "tipo": "number",  "unidade": "kW",  "regex": "^\\d+(\\.\\d+)?$"},
+          {"chave": "tensao_v",            "tipo": "number",  "unidade": "V",   "regex": "^\\d+$"},
+          {"chave": "corrente_a",          "tipo": "number",  "unidade": "A",   "regex": "^\\d+(\\.\\d+)?$"},
+          {"chave": "frequencia_hz",       "tipo": "number",  "unidade": "Hz",  "valores_validos": [50, 60]},
+          {"chave": "rotacao_rpm",         "tipo": "number",  "unidade": "RPM", "regex": "^\\d{3,4}$"},
+          {"chave": "fator_potencia",      "tipo": "number",  "unidade": "—",   "regex": "^0\\.\\d{2}$"},
+          {"chave": "rendimento_pct",      "tipo": "number",  "unidade": "%",   "regex": "^\\d{2,3}(\\.\\d+)?$"},
+          {"chave": "classe_isolamento",   "tipo": "string",  "valores_validos": ["B", "F", "H"]},
+          {"chave": "grau_protecao",       "tipo": "string",  "regex": "^IP\\d{2}$",  "exemplos": ["IP55", "IP56", "IP65"]},
+          {"chave": "classe_eficiencia",   "tipo": "string",  "valores_validos": ["IE1", "IE2", "IE3", "IE4", "IE5"]},
+          {"chave": "regime_servico",      "tipo": "string",  "valores_validos": ["S1", "S2", "S3", "S4", "S6", "S9"]},
+          {"chave": "fabricante",          "tipo": "string",  "vocabulario_controlado": "fabricantes_padronizados"},
+          {"chave": "numero_serie",        "tipo": "string",  "regex": "^[A-Z0-9-]{6,20}$"},
+          {"chave": "ano_fabricacao",      "tipo": "number",  "regex": "^(19|20)\\d{2}$"}
+        ],
+        "vocabulario_controlado": true
+      }
+    ]
   }
 }
