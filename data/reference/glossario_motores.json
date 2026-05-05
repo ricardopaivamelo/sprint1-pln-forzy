@@ -1,6 +1,17 @@
 {
   "metadata": {
     "name": "Glossário Técnico PT/EN — Motores Elétricos Industriais",
+    "projeto": "Forzy — Digital Twin para Motores Elétricos Industriais",
+    "disciplina": "FIAP — Processamento de Linguagem Natural",
+    "sprint": "Sprint 1 — Fundamentos do Ativo e da Base de Dados",
+    "autores": [
+      {"nome": "Nicolas Lemos Ribeiro", "rm": "553273"},
+      {"nome": "Ricardo de Paiva Melo", "rm": "565522"},
+      {"nome": "Luís Fernando de Oliveira Salgado", "rm": "561401"},
+      {"nome": "Pedro Leal Murad", "rm": "565460"},
+      {"nome": "Murilo Benhossi", "rm": "562358"},
+      {"nome": "Jonas Alaf", "rm": "566479"}
+    ],
     "date": "2026-05-05",
     "scope": "Vocabulário controlado para cadastro do ativo motor elétrico industrial",
     "sources_used": [

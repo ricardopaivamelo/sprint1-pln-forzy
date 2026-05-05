@@ -2,6 +2,17 @@
 
 Sprint 1 da disciplina **FIAP — PLN** (Challenge **Forzy**). Corpus textual base do digital twin de motores elétricos industriais, com glossário PT/EN e pipeline de pré-processamento reproduzível.
 
+## Grupo
+
+| Nome | RM |
+|---|---|
+| Nicolas Lemos Ribeiro | 553273 |
+| Ricardo de Paiva Melo | 565522 |
+| Luís Fernando de Oliveira Salgado | 561401 |
+| Pedro Leal Murad | 565460 |
+| Murilo Benhossi | 562358 |
+| Jonas Alaf | 566479 |
+
 > **Status:** Pipeline executado end-to-end (2026-05-05). Notebook entregável em `notebooks/sprint1_pln_corpus.ipynb`.
 
 ---

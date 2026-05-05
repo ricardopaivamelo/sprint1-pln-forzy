@@ -1,6 +1,17 @@
 {
   "metadata": {
     "name": "Decisões de Padronização — Sprint 1 PLN Forzy",
+    "projeto": "Forzy — Digital Twin para Motores Elétricos Industriais",
+    "disciplina": "FIAP — Processamento de Linguagem Natural",
+    "sprint": "Sprint 1 — Fundamentos do Ativo e da Base de Dados",
+    "autores": [
+      {"nome": "Nicolas Lemos Ribeiro", "rm": "553273"},
+      {"nome": "Ricardo de Paiva Melo", "rm": "565522"},
+      {"nome": "Luís Fernando de Oliveira Salgado", "rm": "561401"},
+      {"nome": "Pedro Leal Murad", "rm": "565460"},
+      {"nome": "Murilo Benhossi", "rm": "562358"},
+      {"nome": "Jonas Alaf", "rm": "566479"}
+    ],
     "version": "1.0",
     "data": "2026-05-05",
     "escopo": "Documenta as regras de normalização e decisões de design do pipeline de pré-processamento. Atende ao requisito do brief: 'documentar as decisões de padronização e as regras de normalização aplicadas'.",
