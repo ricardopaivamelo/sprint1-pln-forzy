@@ -1,0 +1,129 @@
+{
+  "estatisticas_basicas": {
+    "n_documentos": 100,
+    "tokens_totais_N": 2042,
+    "vocabulario_V": 472,
+    "type_token_ratio": 0.23114593535749264,
+    "comprimento_medio_tokens": 20.42,
+    "comprimento_mediano_tokens": 20.5,
+    "comprimento_min": 14,
+    "comprimento_max": 28,
+    "hapax_legomena_count": 164,
+    "hapax_taxa_perc": 34.74576271186441,
+    "top20_termos": [
+      [
+        "motor",
+        42
+      ],
+      [
+        "classe",
+        40
+      ],
+      [
+        "trifasico",
+        34
+      ],
+      [
+        "fabricante",
+        33
+      ],
+      [
+        "iec",
+        28
+      ],
+      [
+        "isolacao",
+        25
+      ],
+      [
+        "tag",
+        22
+      ],
+      [
+        "60hz",
+        20
+      ],
+      [
+        "rotacao",
+        17
+      ],
+      [
+        "ativo",
+        17
+      ],
+      [
+        "mm",
+        16
+      ],
+      [
+        "pn",
+        16
+      ],
+      [
+        "un",
+        16
+      ],
+      [
+        "50hz",
+        16
+      ],
+      [
+        "potencia",
+        16
+      ],
+      [
+        "descricao",
+        16
+      ],
+      [
+        "tensao",
+        16
+      ],
+      [
+        "protecao",
+        16
+      ],
+      [
+        "localizacao",
+        15
+      ],
+      [
+        "frame",
+        15
+      ]
+    ]
+  },
+  "cobertura_glossario_tokens": {
+    "termos_glossario_unicos_no_corpus": 61,
+    "tamanho_glossario": 330,
+    "cobertura_perc": 18.484848484848484
+  },
+  "comparacao_lematizacao_vs_stemming": {
+    "lemmas": {
+      "tokens_totais": 2042,
+      "vocabulario_unico": 468,
+      "cobertura_glossario_perc": 16.96969696969697
+    },
+    "stems_rslp": {
+      "tokens_totais": 2042,
+      "vocabulario_unico": 456,
+      "cobertura_glossario_perc": 7.575757575757576
+    },
+    "stems_snowball": {
+      "tokens_totais": 2042,
+      "vocabulario_unico": 458,
+      "cobertura_glossario_perc": 10.303030303030303
+    }
+  },
+  "distribuicao_por_fonte": {
+    "manual": 25,
+    "placa": 30,
+    "ficha_cadastro": 25,
+    "log_operacional": 20
+  },
+  "distribuicao_por_idioma": {
+    "pt": 56,
+    "mixed": 38,
+    "en": 6
+  }
+}

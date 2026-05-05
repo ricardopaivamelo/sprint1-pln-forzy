@@ -1,0 +1,9 @@
+simplemma>=0.9
+nltk>=3.9
+langid>=1.1
+pandas>=2.2
+numpy>=1.26
+matplotlib>=3.9
+seaborn>=0.13
+jsonschema>=4.23
+tqdm>=4.66

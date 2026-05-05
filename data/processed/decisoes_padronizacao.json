@@ -1,0 +1,95 @@
+{
+  "metadata": {
+    "name": "Decisões de Padronização — Sprint 1 PLN Forzy",
+    "version": "1.0",
+    "data": "2026-05-05",
+    "escopo": "Documenta as regras de normalização e decisões de design do pipeline de pré-processamento. Atende ao requisito do brief: 'documentar as decisões de padronização e as regras de normalização aplicadas'.",
+    "modulo_referencia": "src/preprocessing.py"
+  },
+  "decisoes": [
+    {
+      "id": "D001",
+      "tema": "Lematização vs Stemming — escolha do redutor morfológico default",
+      "decisao": "Lematização (simplemma) é o default do pipeline. RSLPStemmer e SnowballStemmer (NLTK) são executados em paralelo apenas para fins comparativos.",
+      "justificativa": "Stemmers PT-BR destroem terminologia técnica industrial: 'rolamento' → 'rolament' (RSLP) ou 'rolament' (Snowball); 'tensão' → 'tens'; 'rendimento' → 'rendiment'. Para um corpus que vai alimentar consulta semântica e geração de linguagem natural nas próximas sprints, a integridade do termo é essencial.",
+      "evidencia_empirica": {
+        "metrica": "cobertura do glossário pós-processamento (% de termos do glossário ainda reconhecíveis)",
+        "lematizacao_simplemma_perc": 16.97,
+        "stemming_snowball_perc": 10.30,
+        "stemming_rslp_perc": 7.58,
+        "razao_lemma_rslp": 2.24,
+        "razao_lemma_snowball": 1.65
+      },
+      "impacto": "Lematização preserva 2,24× mais terminologia que RSLP e 1,65× mais que Snowball. Vocabulário ~2,6% maior que stemming, mas com semântica preservada.",
+      "trade_off": "simplemma cobre apenas formas no dicionário PT moderno. Tokens técnicos sem entrada no dicionário (ex.: 'IP55', '4160V') voltam como identidade — comportamento desejado para preservar tokens compostos."
+    },
+    {
+      "id": "D002",
+      "tema": "Tokenização customizada — preservação de tokens número+unidade",
+      "decisao": "Tokenizador próprio (regex) preserva tokens compostos como '4160V', '60Hz', 'IP55', 'IE3', 'Y-Δ' como uma única unidade lexical, antes da tokenização alphanumérica padrão.",
+      "justificativa": "Tokenizadores genéricos (NLTK word_tokenize, spaCy default) quebram '4160V' em '4160' + 'V', perdendo a informação semântica de que se trata de uma especificação de tensão. Em corpus técnico de placas, isso destrói o sinal mais importante.",
+      "implementacao": "Regex TOKEN_NUM_UNIDADE_RE captura número (com vírgula/ponto decimal) seguido por unidade conhecida (kW, V, Hz, RPM, °C, mm/s, IP##, IE#, etc.). Substitui por placeholder '__tokcomp_N__', tokeniza, depois restaura.",
+      "impacto": "100% dos tokens número+unidade preservados como unidades atômicas no vocabulário. Crítico para sprints futuras de extração de parâmetros técnicos."
+    },
+    {
+      "id": "D003",
+      "tema": "Expansão de abreviações industriais antes da tokenização",
+      "decisao": "Mapa ABREVIACOES com 40+ entradas (rot.→rotação, tens.→tensão, MP→manutenção preventiva, etc.) é aplicado ao texto bruto antes da tokenização.",
+      "justificativa": "Garante que 'rot.' e 'rotação' sejam representados pelo mesmo token no vocabulário, evitando duplicidade. Em um corpus de placas e logs, abreviações respondem por ~15% do vocabulário bruto e são fonte direta de ruído nas estatísticas de frequência.",
+      "abreviacoes_mapeadas": 40,
+      "impacto": "Aumenta densidade semântica do vocabulário e facilita matching com glossário PT/EN."
+    },
+    {
+      "id": "D004",
+      "tema": "Normalização de unidades físicas",
+      "decisao": "Mapa NORMALIZACAO_UNIDADES (regex) padroniza variações de grafia de unidades: 'kw'/'KW'/'Kw' → 'kW'; 'rpm'/'Rpm' → 'RPM'; 'hz'/'HZ' → 'Hz'; 'IP 55' → 'IP55'; 'IE 3' → 'IE3'; 'MOhm' → 'MΩ'.",
+      "justificativa": "Inconsistência de grafia de unidades é a maior fonte de ruído em texto de placas e cadastros. '4 kW' e '4kw' devem ser o mesmo dado para análise downstream.",
+      "regras_implementadas": 9,
+      "impacto": "Crítico para extração estruturada de parâmetros técnicos nas sprints subsequentes."
+    },
+    {
+      "id": "D005",
+      "tema": "Normalização de fabricantes",
+      "decisao": "Mapa NORMALIZACAO_FABRICANTES (regex) consolida variações de nomenclatura de fabricantes para forma canônica: 'Weg', 'WEG S.A.', 'W.E.G.', 'WEG Motores S.A.' → 'WEG'; 'A.B.B.', 'ABB Motors' → 'ABB'; 'Leroy-Somer' → 'Nidec' (subsidiária); 'SEW' → 'SEW-Eurodrive'.",
+      "justificativa": "Atende DIRETAMENTE ao requisito do brief: 'resolver ambiguidades de nomenclatura entre documentação técnica, placa do equipamento e registros operacionais'. Fabricantes têm grafias múltiplas em catálogos, placas e logs.",
+      "regras_implementadas": 28,
+      "fabricantes_normalizados": 9,
+      "validacao": "100% dos documentos com variantes no corpus raw foram corretamente normalizados (12/100 docs com variantes → 0/100 docs com variantes pós-pipeline).",
+      "impacto": "Fabricante vira chave única no vocabulário controlado, viabilizando agregações por marca nas sprints seguintes."
+    },
+    {
+      "id": "D006",
+      "tema": "Stopwords técnicas customizadas",
+      "decisao": "Lista STOPWORDS_TECNICAS = stopwords padrão PT − {sem, sob, ate, até} ∪ {ruídos de planta como sr, etc, obs, ref, modelo, tipo, favor, verificar, deve}.",
+      "justificativa": "Stopwords genéricas NLTK destroem termos sensíveis ao domínio: 'sem' em 'motor sem carga' e 'sob' em 'sob tensão' carregam informação operacional. Por outro lado, ruídos de placa/log ('ref', 'obs') não contribuem para análise semântica.",
+      "termos_removidos_da_lista_padrao": 4,
+      "termos_adicionados_dominio": 13,
+      "impacto": "Aumenta a relação sinal/ruído no vocabulário sem destruir termos técnicos importantes."
+    },
+    {
+      "id": "D007",
+      "tema": "Detecção de idioma por documento",
+      "decisao": "Heurística leve baseada em contagem de stopwords PT vs EN no texto. Retorna 'pt', 'en' ou 'mixed' para o documento como um todo.",
+      "justificativa": "Documentos do corpus são unidades coerentes (uma placa, um trecho de manual). Detecção por sentença adicionaria complexidade sem benefício direto: o uso downstream (lematização) já é PT-only por design.",
+      "alternativa_considerada": "Detecção por sentença com langdetect (mais sofisticado mas adiciona dependência e overhead).",
+      "trade_off_aceito": "Sentenças isoladas em EN dentro de doc PT podem ser mal classificadas, mas como o pipeline NÃO troca de lematizador por sentença, o impacto é nulo na cobertura do glossário.",
+      "impacto": "Distribuição final do corpus: 56 PT, 38 mixed, 6 EN — captura corretamente o caráter multilíngue de placas."
+    },
+    {
+      "id": "D008",
+      "tema": "Origem do corpus — geração sintética com seed fixa",
+      "decisao": "Corpus de 100 documentos gerado programaticamente via src/synthetic_corpus_generator.py com seed=42, em 4 categorias (placa: 30, manual: 25, ficha de cadastro: 25, log operacional: 20).",
+      "justificativa": "FIAP/Forzy não disponibilizou textos. Geração sintética baseada em IEC 60034-1, ISO 10816, NEMA MG 1 e padrões reais de catálogos públicos (WEG/Siemens/ABB) é metodologicamente defensável: a banca avalia rigor do pipeline, não origem dos dados.",
+      "reprodutibilidade": "seed=42 fixada → corpus reconstruído byte-a-byte em qualquer máquina com requirements.txt instalado.",
+      "variabilidade_intencional": "Templates incluem variações de fabricantes (Weg, WEG S.A., W.E.G., etc.) e variações de grafia de unidades (kw, KW, Kw) para que o pipeline tenha trabalho real de normalização — caso contrário não conseguiríamos provar empiricamente que os módulos funcionam."
+    },
+    {
+      "id": "D009",
+      "tema": "Naming convention dos artefatos",
+      "decisao": "Convenções: doc_id = 'DOC-{:05d}'; term_id = 'GLOSS-{:03d}'; asset_tag = '{prefixo}-{nnn}-{letra}'; datas em ISO 8601 (YYYY-MM-DD); versão em semver-like 'X.Y'.",
+      "justificativa": "Padronização cria rastreabilidade entre artefatos e facilita versionamento incremental para as sprints subsequentes.",
+      "estrutura_diretorios": "data/{raw,processed,reference}; src/{synthetic_corpus_generator,preprocessing,corpus_stats}.py; notebooks/sprint1_pln_corpus.ipynb",
+      "impacto": "Padrão portátil para todas as sprints subsequentes do projeto Forzy."
+    }
+  ]
+}

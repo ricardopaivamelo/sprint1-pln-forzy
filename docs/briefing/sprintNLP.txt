@@ -1,0 +1,36 @@
+Sprint 1 - Fundamentos do Ativo e da Base de Dados
+
+Challenge FIAP ? Forzy | Processamento de Linguagem Natural
+
+Contexto do projeto: solução de digital-twin para monitoramento e manutenção preditiva de motores elétricos industriais
+
+Objetivo
+
+Organizar as descrições técnicas, nomenclaturas e metadados textuais dos ativos industriais, estabelecendo uma base linguística padronizada que sustentará todos os módulos de PLN do projeto. Nesta sprint, o foco é transformar textos heterogêneos — extraídos de placas, manuais, fichas de cadastro e logs de operação — em um corpus estruturado, limpo e indexável, preparado para as etapas de consulta semântica e geração de linguagem natural.
+
+Entregáveis
+
+Inventário e Padronização Terminológica do Ativo
+
+Levantar e documentar os termos técnicos recorrentes no domínio de motores elétricos industriais (tensão, corrente, RPM, potência, TAGs, fabricantes, tipos de falha).
+Construir um glossário bilíngue PT/EN para resolver ambiguidades de nomenclatura entre documentação técnica, placa do equipamento e registros operacionais.
+Definir os campos textuais obrigatórios do cadastro do ativo (descrição, TAG, localização, especificação técnica) com padronização de formato e vocabulário controlado.
+
+Pipeline de Pré-processamento Textual
+
+Implementar etapas de normalização: tokenização, remoção de stopwords técnicas, tratamento de abreviações industriais (ex.: 'rot.' ? 'rotação', 'tens.' ? 'tensão').
+Tratar textos multilíngues presentes em placas e manuais (mistura PT/EN/abreviações de norma).
+Aplicar lematização ou stemming adequado ao domínio técnico e avaliar impacto na qualidade do corpus.
+Gerar estatísticas do corpus: vocabulário total, frequência de termos, comprimento médio de descrições.
+
+Corpus Textual Estruturado e Documentado
+
+Consolidar as descrições do ativo em formato JSON ou CSV com metadados: campo, fonte, data de extração, idioma.
+Documentar as decisões de padronização e as regras de normalização aplicadas.
+Preparar a estrutura de diretórios e naming convention dos artefatos textuais para as sprints seguintes.
+
+Formato da Entrega
+
+Pasta no Drive ou repositório GitHub privado contendo:
+Notebook Colab (sprint1_pln_corpus.ipynb) com todo o pipeline de pré-processamento executado, documentado e reproduzível.
+Arquivo do glossário técnico PT/EN em formato JSON ou CSV.
