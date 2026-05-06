@@ -40,9 +40,10 @@
     "total_terms": 110,
     "version_history": [
       {"version": "1.0", "date": "2026-05-05", "change": "Versão inicial com 110 termos PT/EN em 8 categorias."},
-      {"version": "1.1", "date": "2026-05-05", "change": "Adicionadas seções 'fabricantes_padronizados' (com variações de nomenclatura) e 'sinonimos' (PT/EN para os 30 termos mais frequentes)."}
+      {"version": "1.1", "date": "2026-05-05", "change": "Adicionadas seções 'fabricantes_padronizados' (com variações de nomenclatura) e 'sinonimos' (PT/EN para os 30 termos mais frequentes)."},
+      {"version": "1.2", "date": "2026-05-05", "change": "Adicionada seção 'campos_cadastro_ativo' com 4 campos (TAG, descrição, localização, especificação técnica) — cada um com regex de validação, template, exemplos válidos/inválidos e vocabulário controlado."}
     ],
-    "version": "1.1"
+    "version": "1.2"
   },
   "terms": [
     {"term_id": "GLOSS-001", "pt": "tensão nominal", "en": "rated voltage", "category": "grandeza_eletrica", "abbreviations": ["tens.", "Un", "V"], "definition_pt": "Tensão de operação para a qual o motor foi projetado.", "controlled_vocab_field": "especificacao_tecnica", "source_norm": "IEC 60034-1"},

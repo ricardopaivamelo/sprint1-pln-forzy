@@ -19,7 +19,7 @@ Sprint 1 da disciplina **FIAP — PLN** (Challenge **Forzy**). Corpus textual ba
 
 | # | Entregável | Artefato | Status |
 |---|------------|----------|--------|
-| 1 | Inventário e Padronização Terminológica | `data/reference/glossario_motores.json` (v1.1) | ✅ 110 termos PT/EN em 8 categorias + 9 fabricantes padronizados (com variações) + 30 sinônimos + 40+ abreviações |
+| 1 | Inventário e Padronização Terminológica | `data/reference/glossario_motores.json` (v1.2) | ✅ 110 termos PT/EN em 8 categorias + 9 fabricantes padronizados (com variações) + 30 sinônimos + 40+ abreviações + **4 campos do cadastro com regex de validação, template e exemplos** |
 | 2 | Pipeline de Pré-processamento Textual | `src/preprocessing.py` + notebook | ✅ Tokenização customizada, expansão de abreviações, **normalização de unidades**, **normalização de fabricantes**, stopwords técnicas, lematização (simplemma) + 2 stemmings (RSLP, Snowball) em paralelo |
 | 3 | Corpus Estruturado e Documentado | `data/processed/corpus_processed.jsonl` + `corpus_metadata.csv` + `corpus_stats.json` + **`decisoes_padronizacao.json`** | ✅ 100 docs com metadados completos + 9 decisões metodológicas documentadas |
 
@@ -30,6 +30,7 @@ Sprint 1 da disciplina **FIAP — PLN** (Challenge **Forzy**). Corpus textual ba
   - Stemming RSLP: **7,58%**
 - Lematização preserva **2,24× mais terminologia que RSLP** e **1,65× mais que Snowball**.
 - **Normalização de fabricantes:** 100% dos documentos com variantes (12/100) corretamente normalizados.
+- **Análise de Zipf**: distribuição log-log do corpus comparada à reta teórica + cauda longa típica de domínio técnico (notebook §3.2.1).
 
 ## Estrutura
 
@@ -39,11 +40,9 @@ sprint1-nlp-motores/
 ├── requirements.txt
 ├── docs/
 │   ├── briefing/sprintNLP.txt          brief original FIAP
-│   └── planning/
-│       ├── ANALYSIS.md                  análise técnica do brief
-│       └── QUESTIONS.md                 perguntas abertas (registro histórico)
+│   └── planning/ANALYSIS.md             análise técnica do brief
 ├── notebooks/
-│   └── sprint1_pln_corpus.ipynb         entregável oficial (rodável end-to-end)
+│   └── sprint1_pln_corpus.ipynb         entregável oficial (rodável end-to-end, com Zipf)
 ├── data/
 │   ├── raw/corpus_raw.jsonl             100 docs sintéticos (seed=42, reproduzível)
 │   ├── processed/
@@ -51,7 +50,7 @@ sprint1-nlp-motores/
 │   │   ├── corpus_metadata.csv          metadados achatados em CSV
 │   │   ├── corpus_stats.json            estatísticas + comparação 3-way (lema × RSLP × Snowball)
 │   │   └── decisoes_padronizacao.json   9 decisões metodológicas estruturadas
-│   └── reference/glossario_motores.json glossário PT/EN v1.1 (termos + sinônimos + fabricantes)
+│   └── reference/glossario_motores.json glossário PT/EN v1.2 (termos + sinônimos + fabricantes + campos do cadastro com regex)
 └── src/
     ├── synthetic_corpus_generator.py    gera corpus sintético reproduzível
     ├── preprocessing.py                 pipeline completo (tokenize→lemma+stem)
@@ -74,7 +73,7 @@ python src/synthetic_corpus_generator.py
 # 2. Pré-processar (tokenização, lema, stem, idioma)
 python src/preprocessing.py
 
-# 3. Estatísticas + comparação lema/stem
+# 3. Estatísticas + comparação 3-way (lema × RSLP × Snowball)
 python src/corpus_stats.py
 
 # 4. Ou rodar tudo via notebook (entrega oficial)
