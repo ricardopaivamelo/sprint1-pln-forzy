@@ -13,8 +13,6 @@ Sprint 1 da disciplina **FIAP — PLN** (Challenge **Forzy**). Corpus textual ba
 | Murilo Benhossi | 562358 |
 | Jonas Alaf | 566479 |
 
-> **Status:** Pipeline executado end-to-end (2026-05-05). Notebook entregável em `notebooks/sprint1_pln_corpus.ipynb`.
-
 ---
 
 ## Entregáveis cumpridos
